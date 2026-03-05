@@ -1,0 +1,71 @@
+curl https://api.resend.com/emails -H "Authorization: Bearer YOUR_RESEND_API_KEY"  -H "Content-Type: application/json"  -d '{  "from": "DigiKids <your@email.com>",  "to": ["your@email.com"],  "subject": "Resend Test",  "html": "<p>Your DigiKids email system is working.</p>" }'
+
+
+curl https://api.resend.com/emails -H "Authorization: Bearer YOUR_RESEND_API_KEY"  -H "Content-Type: application/json" -d "{\"from\":\"DigiKids <your@email.com>\",\"to\":[\"your@email.com\"],\"subject\":\"Resend Test\",\"html\":\"<p>Your DigiKids email system is working.</p>\"}"
+
+$apiKey = "YOUR_RESEND_API_KEY"
+
+$body = @{
+  from    = "DigiKids <onboarding@resend.dev>"
+  to      = @("your@email.com")
+  subject = "Resend Test"
+  html    = "<p>Your DigiKids email system is working.</p>"
+} | ConvertTo-Json -Depth 5
+
+Invoke-RestMethod `
+  -Method Post `
+  -Uri "https://api.resend.com/emails" `
+  -Headers @{ Authorization = "Bearer $apiKey" } `
+  -ContentType "application/json" `
+  -Body $body
+
+
+# Azure Storage connection string - use from local.settings.json or env, never commit real key
+# DefaultEndpointsProtocol=https;AccountName=...;AccountKey=...;EndpointSuffix=core.windows.net
+
+
+
+$relayKey = "YOUR_RELAY_API_KEY"
+$body = @{ deviceId="device-001" } | ConvertTo-Json
+Invoke-RestMethod -Method Post "http://localhost:7071/api/v1/pin-reset/request" `
+  -Headers @{ "X-Relay-Key" = $relayKey } `
+  -ContentType "application/json" `
+  -Body $body
+
+
+$relayKey = "YOUR_RELAY_API_KEY"
+$code = "463852"
+$body = @{ deviceId="device-001"; code=$code } | ConvertTo-Json
+
+Invoke-RestMethod -Method Post "http://localhost:7071/api/v1/pin-reset/verify" `
+  -Headers @{ "X-Relay-Key" = $relayKey } `
+  -ContentType "application/json" `
+  -Body $body
+
+
+$relayKey = "YOUR_RELAY_API_KEY"
+$body = @{ deviceId="device-001"; parentEmail="your@email.com" } | ConvertTo-Json
+Invoke-RestMethod -Method Post "http://localhost:7071/api/v1/device/register" `
+  -Headers @{ "X-Relay-Key" = $relayKey } `
+  -ContentType "application/json" `
+  -Body $body
+
+
+$relayKey = "YOUR_RELAY_API_KEY"
+$reqId = [guid]::NewGuid().ToString()
+$body = @{
+  deviceId="device-001"
+  requestId=$reqId
+  childId="child-001"
+  domain="youtube.com"
+  requestedMinutes=10
+} | ConvertTo-Json
+Invoke-RestMethod -Method Post "http://localhost:7071/api/v1/approval/request" `
+  -Headers @{ "X-Relay-Key" = $relayKey } `
+  -ContentType "application/json" `
+  -Body $body
+
+
+$relayKey = "YOUR_RELAY_API_KEY"
+Invoke-RestMethod -Method Get "http://localhost:7071/api/v1/approval/status?deviceId=device-001&requestId=$reqId" `
+  -Headers @{ "X-Relay-Key" = $relayKey }

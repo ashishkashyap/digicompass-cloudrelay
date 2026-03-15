@@ -1,0 +1,401 @@
+$relayKey = "123456789123456789123456789123456789"   # same as in Azure app settings
+$body = @{ deviceId = "device-001"; parentEmail = "parent@example.com" } | ConvertTo-Json
+
+Invoke-RestMethod -Method Post "https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/device/register" `
+  -Headers @{ "X-Relay-Key" = $relayKey } `
+  -ContentType "application/json" `
+  -Body $body
+
+
+
+To build:
+
+
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> dotnet build 
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  WorkerExtensions -> C:\digicompass-cloudrelay\DigiCompassCloudRelay\obj\Debug\net8.0\WorkerExtensio
+  ns\bin\Release\net8.0\Microsoft.Azure.Functions.Worker.Extensions.dll
+  DigiCompassCloudRelay -> C:\digicompass-cloudrelay\DigiCompassCloudRelay\bin\Debug\net8.0\DigiCompa
+  ssCloudRelay.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:05.45
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay>    func start
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  WorkerExtensions -> C:\digicompass-cloudrelay\DigiCompassCloudRelay\obj\Debug\net8.0\WorkerExtensions\bin\Release\net8.0\Microsoft.Azure.Functions.Worker.Extensions.dll
+  DigiCompassCloudRelay -> C:\digicompass-cloudrelay\DigiCompassCloudRelay\bin\output\DigiCompassCloudRelay.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.31
+
+
+
+
+Azure Functions Core Tools
+Core Tools Version:       4.7.0+af9404fa5872d8fa5fa2454a7cfeb2ee0cda2832 (64-bit)
+Function Runtime Version: 4.1045.200.25556
+
+[2026-03-05T06:27:15.367Z] Found C:\digicompass-cloudrelay\DigiCompassCloudRelay\DigiCompassCloudRelay.csproj. Using for user secrets file configuration.
+[2026-03-05T06:27:19.099Z] Worker process started and initialized.
+
+Functions:
+
+        ApprovalAction: [GET] http://localhost:7071/api/v1/approval/action
+
+        ApprovalRequest: [POST] http://localhost:7071/api/v1/approval/request
+
+        ApprovalStatus: [GET] http://localhost:7071/api/v1/approval/status
+
+        DeviceRegister: [POST] http://localhost:7071/api/v1/device/register
+
+        Health: [GET] http://localhost:7071/api/Health
+
+        PinResetRequest: [POST] http://localhost:7071/api/v1/pin-reset/request
+
+        PinResetVerify: [POST] http://localhost:7071/api/v1/pin-reset/verify
+
+For detailed output, run func with --verbose flag.
+[2026-03-05T06:27:24.667Z] Host lock lease acquired by instance ID '000000000000000000000000272A79E0'.
+[2026-03-05T06:32:28.901Z] Executing 'Functions.ApprovalRequest' (Reason='This function was programmatically called via the host APIs.', Id=258b57a1-7f83-4ddd-8a68-6019729fda53)
+[2026-03-05T06:32:30.059Z] Executed 'Functions.ApprovalRequest' (Succeeded, Id=258b57a1-7f83-4ddd-8a68-6019729fda53, Duration=1177ms)
+[2026-03-05T06:33:30.238Z] Executing 'Functions.ApprovalAction' (Reason='This function was programmatically called via the host APIs.', Id=485a3d3f-812d-483f-ad39-19467f75bd44)
+[2026-03-05T06:33:30.635Z] Executed 'Functions.ApprovalAction' (Succeeded, Id=485a3d3f-812d-483f-ad39-19467f75bd44, Duration=400ms)
+[2026-03-05T06:35:18.111Z] Executing 'Functions.ApprovalStatus' (Reason='This function was programmatically called via the host APIs.', Id=073d1a39-d58c-4d9d-a28f-e7b0fed1a13c)
+[2026-03-05T06:35:18.369Z] Executed 'Functions.ApprovalStatus' (Succeeded, Id=073d1a39-d58c-4d9d-a28f-e7b0fed1a13c, Duration=258ms)
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> func azure functionapp publish DigiCompassCloudRelay
+Unable to connect to Azure. Make sure you have the `az` CLI or `Az.Accounts` PowerShell module installed and logged in and try again
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> winget install Microsoft.AzureCLI
+Found Microsoft Azure CLI [Microsoft.AzureCLI] Version 2.84.0
+This application is licensed to you by its owner.
+Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
+Downloading https://azcliprod.blob.core.windows.net/msi/azure-cli-2.84.0-x64.msi
+  ██████████████████████████████  64.8 MB / 64.8 MB
+Successfully verified installer hash
+Starting package install...
+Successfully installed
+Notes: Winget installs the 64-bit CLI on 64-bit OS by default now. If you have used the 32-bit CLI before, please follow this guide to migrate to 64-bit version: https://learn.microsoft.com/cli/azure/install-azure-cli-windows#migrate-to-64-bit-azure-cli
+
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> az login
+az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable 
+program. Check the spelling of the name, or if a path was included, verify that the path is correct   
+and try again.
+At line:1 char:1
++ az login
++ ~~
+    + CategoryInfo          : ObjectNotFound: (az:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> winget install Microsoft.AzureCLI
+Found an existing package already installed. Trying to upgrade the installed package...
+No available upgrade found.
+No newer package versions are available from the configured sources.
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> az login
+az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable      
+program. Check the spelling of the name, or if a path was included, verify that the path is correct   
+and try again.
+At line:1 char:1
++ az login
++ ~~
+    + CategoryInfo          : ObjectNotFound: (az:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> ^C      
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> ^C
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> 
+
+
+
+
+
+
+
+
+
+To publish to Azure:
+
+PS C:\digicompass-cloudrelay> az login
+az : The term 'az' is not recognized as the name of a cmdlet, function, script file, or operable 
+program. Check the spelling of the name, or if a path was included, verify that the path is correct 
+and try again.
+At line:1 char:1
++ az login
++ ~~
+    + CategoryInfo          : ObjectNotFound: (az:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+PS C:\digicompass-cloudrelay> $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+PS C:\digicompass-cloudrelay> az login
+Select the account you want to log in with. For more information on login with Azure CLI, see https://go.microsoft.com/fwlink/?linkid=2271136
+User Cancelled in Transfer token flow. Status: Response_Status.Status_UserCanceled, Error code: 0, Tag: 508344210
+Run the command below to authenticate interactively; additional arguments may be added as needed:
+az logout
+az login
+PS C:\digicompass-cloudrelay> az login
+Select the account you want to log in with. For more information on login with Azure CLI, see https://go.microsoft.com/fwlink/?linkid=2271136
+User canceled the flow. Status: Response_Status.Status_UserCanceled, Error code: 0, Tag: 593773845
+Run the command below to authenticate interactively; additional arguments may be added as needed:
+az logout
+az login
+PS C:\digicompass-cloudrelay> az login
+Select the account you want to log in with. For more information on login with Azure CLI, see https://go.microsoft.com/fwlink/?linkid=2271136
+User cancelled the Accounts Control Operation.. Status: Response_Status.Status_UserCanceled, Error code: 0, Tag: 528315210
+Run the command below to authenticate interactively; additional arguments may be added as needed:
+az logout
+az login
+PS C:\digicompass-cloudrelay> az login
+Select the account you want to log in with. For more information on login with Azure CLI, see https://go.microsoft.com/fwlink/?linkid=2271136
+
+Retrieving tenants and subscriptions for the selection...
+
+[Tenant and subscription selection]
+
+No     Subscription name     Subscription ID                       Tenant
+-----  --------------------  ------------------------------------  -----------------
+[1] *  Azure subscription 1  854e2417-1dd3-4e8b-9592-9ab019364f0b  Default Directory
+
+The default is marked with an *; the default tenant is 'Default Directory' and subscription is 'Azure subscription 1' (854e2417-1dd3-4e8b-9592-9ab019364f0b).
+
+Select a subscription and tenant (Type a number or Enter for no changes):
+
+Tenant: Default Directory
+Subscription: Azure subscription 1 (854e2417-1dd3-4e8b-9592-9ab019364f0b)
+
+[Announcements]
+With the new Azure CLI login experience, you can select the subscription you want to use more easily. Learn more about it and its configuration at https://go.microsoft.com/fwlink/?linkid=2271236
+
+If you encounter any problem, please open an issue at https://aka.ms/azclibug
+
+[Warning] The login output has been updated. Please be aware that it no longer displays the full list of available subscriptions by default.
+
+PS C:\digicompass-cloudrelay> dir *.csproj
+PS C:\digicompass-cloudrelay> cd .\DigiCompassCloudRelay\
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> dir *.csproj
+
+
+    Directory: C:\digicompass-cloudrelay\DigiCompassCloudRelay
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----          3/4/2026  10:00 PM           1112 DigiCompassCloudRelay.csproj
+
+
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> func azure functionapp publish DigiCompassCloudRelay
+Detected target framework: net8.0
+Function App 'DigiCompassCloudRelay' is missing host storage configuration. Provide either 'AzureWebJobsStorage' (connection string) or identity-based settings prefixed with 'AzureWebJobsStorage__'. Learn more at https://aka.ms/func-app-settings-storage
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> func azure functionapp publish DigiCompassCloudRelay
+Detected target framework: net8.0
+Function App 'DigiCompassCloudRelay' is missing host storage configuration. Provide either 'AzureWebJobsStorage' (connection string) or identity-based settings prefixed with 'AzureWebJobsStorage__'. Learn more at https://aka.ms/func-app-settings-storage
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> az functionapp config appsettings list --name DigiCompassCloudRelay --resource-group YOUR_RESOURCE_GROUP --query "[?name=='AzureWebJobsStorage'].name" -o tsv
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> az functionapp config appsettings list --name DigiCompassCloudRelay --resource-group rg-digicompass-relay --query "[?name=='AzureWebJobsStorage'].name" -o tsv
+AzureWebJobsStorage
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> func azure functionapp publish DigiCompassCloudRelay                                                                                                    
+Detected target framework: net8.0
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Determining projects to restore...
+  Restored C:\digicompass-cloudrelay\DigiCompassCloudRelay\obj\release\net8.0\WorkerExtensions\WorkerExtensions.csproj (in 1.41 sec).
+  WorkerExtensions -> C:\digicompass-cloudrelay\DigiCompassCloudRelay\obj\release\net8.0\WorkerExtensions\bin\Release\net8.0\Microsoft.Azure.Functions.Worker.Extensions.dll
+  DigiCompassCloudRelay -> C:\digicompass-cloudrelay\DigiCompassCloudRelay\bin\publish\DigiCompassCloudRelay.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:08.01
+
+
+Getting site publishing info...
+[2026-03-05T07:26:29.191Z] Starting the function app deployment...
+Creating archive for current directory...
+Uploading 4.5 MB [################################################################################]
+Upload completed successfully.
+Deployment completed successfully.
+[2026-03-05T07:26:48.021Z] Syncing triggers...
+Functions in DigiCompassCloudRelay:
+    ApprovalAction - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/approval/action
+
+    ApprovalRequest - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/approval/request
+
+    ApprovalStatus - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/approval/status
+
+    DeviceRegister - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/device/register
+
+    Health - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/health
+
+    PinResetRequest - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/pin-reset/request
+
+    PinResetVerify - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/pin-reset/verify
+
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay> func azure functionapp publish DigiCompassCloudRelay
+Detected target framework: net8.0
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  WorkerExtensions -> C:\digicompass-cloudrelay\DigiCompassCloudRelay\obj\release\net8.0\WorkerExtensions\bin\Release\net8.0\Microsoft.Azure.Functions.Worker.Extensions.dll
+  DigiCompassCloudRelay -> C:\digicompass-cloudrelay\DigiCompassCloudRelay\bin\publish\DigiCompassCloudRelay.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:07.98
+
+
+Getting site publishing info...
+[2026-03-14T21:15:02.048Z] Starting the function app deployment...
+Creating archive for current directory...
+Uploading 4.5 MB [################################################################################]
+Upload completed successfully.
+Deployment completed successfully.
+[2026-03-14T21:15:26.353Z] Syncing triggers...
+Functions in DigiCompassCloudRelay:
+    ApprovalAction - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/approval/action
+
+    ApprovalRequest - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/approval/request
+
+    ApprovalStatus - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/approval/status
+
+    DeviceRegister - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/device/register
+
+    Health - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/health
+
+    PinResetRequest - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/pin-reset/request
+
+    PinResetVerify - [httpTrigger]
+        Invoke url: https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/pin-reset/verify
+
+PS C:\digicompass-cloudrelay\DigiCompassCloudRelay>
+
+
+
+
+
+Different Invocations:
+
+PS C:\digicompass-cloudrelay> $relayKey = "123456789123456789123456789123456789"
+PS C:\digicompass-cloudrelay> $reqId = [guid]::NewGuid().ToString()
+PS C:\digicompass-cloudrelay> $body = @{
+>>   deviceId="device-001"
+>>   requestId=$reqId
+>>   childId="child-001"
+>>   domain="youtube.com"
+>>   requestedMinutes=10
+>> } | ConvertTo-Json
+PS C:\digicompass-cloudrelay> Invoke-RestMethod -Method Post "http://localhost:7071/api/v1/approval/request" `
+>>   -Headers @{ "X-Relay-Key" = $relayKey } `
+>>   -ContentType "application/json" `
+>>   -Body $body
+
+created
+-------
+   True
+
+
+PS C:\digicompass-cloudrelay> $relayKey = "123456789123456789123456789123456789"
+PS C:\digicompass-cloudrelay> Invoke-RestMethod -Method Get "http://localhost:7071/api/v1/approval/status?deviceId=device-001&requestId=$reqId" `
+>>   -Headers @{ "X-Relay-Key" = $relayKey }
+
+status   decisionMinutes decidedUtc
+------   --------------- ----------
+approved              10 2026-03-05T06:33:30.4474080+00:00
+
+
+PS C:\digicompass-cloudrelay> $relayKey = "123456789123456789123456789123456789"
+PS C:\digicompass-cloudrelay> $reqId = [guid]::NewGuid().ToString()
+PS C:\digicompass-cloudrelay> $body = @{
+>>   deviceId="device-001"
+>>   requestId=$reqId
+>>   childId="child-001"
+>>   domain="youtube.com"
+>>   requestedMinutes=10
+>> } | ConvertTo-Json
+PS C:\digicompass-cloudrelay> Invoke-RestMethod -Method Post "https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/approval/request" `
+>>   -Headers @{ "X-Relay-Key" = $relayKey } `
+>>   -ContentType "application/json" `
+>>   -Body $body
+
+created
+-------
+   True
+
+
+PS C:\digicompass-cloudrelay> $relayKey = "123456789123456789123456789123456789"
+PS C:\digicompass-cloudrelay> Invoke-RestMethod -Method Get "https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/approval/status?deviceId=device-001&requestId=$reqId" `   
+>>   -Headers @{ "X-Relay-Key" = $relayKey }
+
+status   decisionMinutes decidedUtc
+------   --------------- ----------
+approved              10 2026-03-05T07:30:57.2596055+00:00
+
+
+PS C:\digicompass-cloudrelay> $relayKey = "123456789123456789123456789123456789"
+PS C:\digicompass-cloudrelay> $body = @{ deviceId="device-001" } | ConvertTo-Json
+PS C:\digicompass-cloudrelay> Invoke-RestMethod -Method Post "https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/pin-reset/request" `
+>>   -Headers @{ "X-Relay-Key" = $relayKey } `
+>>   -ContentType "application/json" `
+>>   -Body $body
+
+sent
+----
+True
+
+
+PS C:\digicompass-cloudrelay> $relayKey = "123456789123456789123456789123456789"
+PS C:\digicompass-cloudrelay> $code = "228611"
+PS C:\digicompass-cloudrelay> $body = @{ deviceId="device-001"; code=$code } | ConvertTo-Json
+PS C:\digicompass-cloudrelay> 
+PS C:\digicompass-cloudrelay> Invoke-RestMethod -Method Post "https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/pin-reset/verify" `
+>>   -Headers @{ "X-Relay-Key" = $relayKey } `
+>>   -ContentType "application/json" `
+>>   -Body $body
+
+resetToken                                  expiresUtc
+----------                                  ----------
+UORy32hPqLfhsHCs5oNJKWBOt55nl6gcDZPXLK2npVA 2026-03-05T07:50:14.1001212+00:00
+
+
+PS C:\digicompass-cloudrelay> $relayKey = "123456789123456789123456789123456789"
+PS C:\digicompass-cloudrelay> $code = "228611"
+PS C:\digicompass-cloudrelay> $body = @{ deviceId="device-001"; code=$code } | ConvertTo-Json
+PS C:\digicompass-cloudrelay> 
+PS C:\digicompass-cloudrelay> Invoke-RestMethod -Method Post "https://digicompasscloudrelay-enhkh8dge5eyd4cn.centralus-01.azurewebsites.net/api/v1/pin-reset/verify" `
+>>   -Headers @{ "X-Relay-Key" = $relayKey } `
+>>   -ContentType "application/json" `
+>>   -Body $body
+Invoke-RestMethod : The remote server returned an error: (400) Bad Request.
+At line:1 char:1
++ Invoke-RestMethod -Method Post "https://digicompasscloudrelay-enhkh8d ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-R  
+   estMethod], WebException
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRest  
+   MethodCommand
+
+PS C:\digicompass-cloudrelay> 
